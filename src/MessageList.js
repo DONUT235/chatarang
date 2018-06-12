@@ -1,14 +1,10 @@
 import React from 'react';
 import Message from './Message';
 
-function MessageList() {
-	const messages = [
-		{username: 'foo', body: 'bar', id: 1},
-		{username: 'baz', body: 'qux', id: 2}
-	];
+function MessageList(props) {
 	return (
 		<div className="MessageList">
-			{messages.map(message => <Message message={message} />)}
+			{props.messages.map(message => <Message message={message} />)}
 		</div>
 	);
 }
