@@ -1,19 +1,13 @@
 import React from 'react';
+import Avatar from './Avatar';
 
 function Message(props) {
-	const AvatarStyle = {
-		marginRight: '0.5rem',
-		height: '40px',
-		width: '40px',
-		fontSize: '1rem',
-		borderRadius: '20px',
-		background: `url(${props.message.user.avatarURL})`
-	}
 	return (
 		<div className="Message" style={styles.Message}>
-			<div
-				style={AvatarStyle}
-			></div>
+			<Avatar
+				className="Avatar"
+				email={props.message.user.email}
+			/>
 			<div style={styles.details}>
 				<div className="Metadata" style={styles.Metadata}>
 					<div style={styles.user}>{props.message.user.username}</div>

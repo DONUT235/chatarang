@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { StyleSheet, css } from 'aphrodite';
 
 class MessageForm extends Component {
 	constructor(props) {
@@ -19,11 +20,10 @@ class MessageForm extends Component {
 	render() {
 		return (
 			<form 
-				className="MessageForm" 
 				onSubmit={this.handleSubmit} 
-				style={styles.MessageForm}
+				className={`MessageForm ${css(styles.MessageForm)}`}
 			>
-				<div style={styles.chatIcon}>
+				<div className={css(styles.chatIcon)}>
 					<i className="fas fa-comment-alt"></i>
 				</div>
 				<input 
@@ -31,9 +31,9 @@ class MessageForm extends Component {
 					placeholder="Type a message..."
 					value={this.state.messageBody}
 					onChange={this.handleInput}
-					style={styles.input}
+					className={css(styles.input)}
 				/>
-				<button type="submit" style={styles.button}>
+				<button type="submit" className={css(styles.button)}>
 					<i className="far fa-paper-plane" title="Send"></i>
 				</button>
 			</form>
@@ -41,7 +41,7 @@ class MessageForm extends Component {
 	}
 }
 
-const styles = {
+const styles = StyleSheet.create({
 	MessageForm: {
 		backgroundColor: 'white',
 		height: '3rem',
@@ -64,14 +64,13 @@ const styles = {
 	},
 
 	input: {
+		':focus': {
+			outline: '0',
+		},
 		flex: '1',
 		fontSize: '1.2rem',
 		border: '0',
 	},
-
-	/*input:focus {
-		outline: '0',
-	},*/
 
 	button: {
 		fontSize: '1.5rem',
@@ -83,6 +82,6 @@ const styles = {
 		borderBottomRightRadius: '0.5rem',
 		border: '1px solid white',
 	},
-}
+});
 
 export default MessageForm;

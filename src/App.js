@@ -8,9 +8,9 @@ class App extends Component {
 		super(props);
 		this.state = {
 			user: {
-				uid: '921379',
-				username: 'DONUT235',
-				avatarURL: 'https://api.adorable.io/avatars/32/davey@getfretless.com', 
+				uid: null,
+				email: '',
+				username: '',
 			}
 		}
 	}
@@ -18,36 +18,30 @@ class App extends Component {
 		this.setState({
 			user: {
 				uid: this.state.user.uid,
+				email: '',
 				username: '',
 			}
 		});
 	};
-	logIn = ev => {
-		ev.preventDefault();
+	logIn = user => {
 		this.setState({
-			user: {
-				uid: this.state.user.uid,
-				username: ev.target.username.value,
-				avatarURL: 'https://api.adorable.io/avatars/32/davey@getfretless.com', 
-			}
+			user: user
 		});
 	};
 	render() {
-		if(this.state.user.username !== '') {
-			return (
-				<div className="App">
-					<Main 
-						user={this.state.user}
-						logIn={this.logIn}
-						logOut={this.logOut}
-					/>
-				</div>
-			);
-		} else {
-			return (
-				<SignIn logIn={this.logIn}/>
-			);
-		}
+		return (
+			<div className="App">
+				{
+					this.state.user.username !== ''
+						?<Main 
+							user={this.state.user}
+							logIn={this.logIn}
+							logOut={this.logOut}
+						/>
+						:<SignIn logIn={this.logIn}/>
+				}
+			</div>
+		);
 	}
 }
 
