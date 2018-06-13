@@ -14,6 +14,14 @@ class App extends Component {
 			}
 		}
 	}
+	componentWillMount() {
+		let prevUser = localStorage.getItem('user');
+		if(prevUser) {
+			this.setState({
+				user: JSON.parse(prevUser),
+			});
+		}
+	}
 	logOut = ev => {
 		this.setState({
 			user: {
@@ -22,8 +30,10 @@ class App extends Component {
 				username: '',
 			}
 		});
+		localStorage.removeItem('user');
 	};
 	logIn = user => {
+		localStorage.setItem('user',JSON.stringify(user));
 		this.setState({
 			user: user
 		});

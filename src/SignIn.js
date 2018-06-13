@@ -6,15 +6,12 @@ class SignIn extends Component {
 		email: '',
 		uid: null,
 	};
-	handleEmailChange = ev => {
-		this.setState({
-			email: ev.target.value
-		});
-	};
-	handleUsernameChange = ev => {
-		this.setState({
-			username: ev.target.value,
-		});
+	handleChange(field) {
+		return ev =>  {
+			let o = {};
+			o[field] = ev.target.value;
+			this.setState(o);
+		}
 	};
 	handleSubmit = ev => {
 		ev.preventDefault();
@@ -34,14 +31,14 @@ class SignIn extends Component {
 						placeholder="Email address" 
 						name="email" 
 						value={this.state.email}
-						onChange={this.handleEmailChange}
+						onChange={this.handleChange('email')}
 					/>
 					<input 
 						type="text" 
 						placeholder="Username" 
 						name="username" 
 						value={this.state.username}
-						onChange={this.handleUsernameChange}
+						onChange={this.handleChange('username')}
 					/>
 					<input type="submit" value="Log In"/>
 				</form>
