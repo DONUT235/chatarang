@@ -6,19 +6,20 @@ import MessageForm from './MessageForm';
 class Chat extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {messages: [
-			{username: 'foo', body: 'bar', id: 1},
-			{username: 'baz', body: 'qux', id: 2},
-		]};
-		this.uid = 3;
+		this.state = {messages: []};
+		this.uid = 0;
 	}
 	render() {
 		return (
-			<div className="chat">
-				<ChatHeader />
-				<MessageList messages={this.state.messages}/>
+			<main className="Chat" style={styles.Chat}>
+				<ChatHeader channelName="#general" channelDescription="General chat"/>
+				<MessageList 
+					messages={this.state.messages}
+					channelName="#general" 
+					channelDescription="General chat"
+				/>
 				<MessageForm addMessage={this.addMessage}/>
-			</div>
+			</main>
 		);
 	}
 	getUid() {
@@ -27,9 +28,18 @@ class Chat extends Component {
 	addMessage = newMessage => {
 		const newMessageObject = {body: newMessage};
 		newMessageObject.id = this.getUid();
-		newMessageObject.username = this.props.user.username;
+		newMessageObject.user = this.props.user;
+		newMessageObject.time = new Date();
 		this.setState({messages: this.state.messages.concat([newMessageObject])});
 	};
+}
+
+const styles = {
+	Chat: {
+	  flex: '1',
+	  display: 'flex',
+	  flexDirection: 'column',
+	},
 }
 
 export default Chat;

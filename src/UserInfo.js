@@ -9,7 +9,7 @@ class UserInfo extends Component {
 			width: '40px',
 			fontSize: '1rem',
 			borderRadius: '20px',
-			background: `url(${this.props.avatarUrl})`
+			background: `url(${this.props.user.avatarURL})`
 		}
 	}
 	handleEnter(ev) {

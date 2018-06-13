@@ -8,7 +8,6 @@ function Sidebar(props) {
 			<aside style={styles.Sidebar}>
 				<UserInfo 
 					user={props.user} 
-					avatarUrl={'https://api.adorable.io/avatars/32/davey@getfretless.com'}
 					logOut={props.logOut}
 				/>
 				<h1 style={{...styles.h1, ...styles.children}}>XTBC 18</h1>

@@ -10,6 +10,7 @@ class App extends Component {
 			user: {
 				uid: '921379',
 				username: 'DONUT235',
+				avatarURL: 'https://api.adorable.io/avatars/32/davey@getfretless.com', 
 			}
 		}
 	}
@@ -27,6 +28,7 @@ class App extends Component {
 			user: {
 				uid: this.state.user.uid,
 				username: ev.target.username.value,
+				avatarURL: 'https://api.adorable.io/avatars/32/davey@getfretless.com', 
 			}
 		});
 	};
