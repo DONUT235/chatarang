@@ -33,7 +33,7 @@ class App extends Component {
 		});
 	};
 	render() {
-		if(this.state.user.username != '') {
+		if(this.state.user.username !== '') {
 			return (
 				<div className="App">
 					<Main 

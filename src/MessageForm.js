@@ -7,8 +7,10 @@ class MessageForm extends Component {
 	}
 	handleSubmit = ev => {
 		ev.preventDefault();
-		this.props.addMessage(this.state.messageBody); 
-		this.setState({messageBody: ''});
+		if(this.state.messageBody !== '') {
+			this.props.addMessage(this.state.messageBody); 
+			this.setState({messageBody: ''});
+		}
 	}
 	handleInput = ev => {
 		this.setState({messageBody: ev.target.value});
