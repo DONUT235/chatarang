@@ -1,17 +1,8 @@
 import React, { Component } from 'react';
 import Avatar from './Avatar';
+import SignOut from './SignOut';
 
 class UserInfo extends Component {
-	constructor(props) {
-		super(props);
-	}
-	handleEnter(ev) {
-		ev.target.style.color = 'white';
-	}
-	handleExit(ev) {
-		ev.target.style.color = 'rgba(255, 255, 255, 0.6)';
-	}
-	
 	render() {
 		return (
 			<div className="UserInfo" style={styles.UserInfo}>
@@ -20,6 +11,7 @@ class UserInfo extends Component {
 					avatarURL={this.props.user.avatarURL}
 				/>
 				<div className="user" style={styles.user}>{this.props.user.username}</div>
+				<SignOut logOut={this.props.logOut}/>
 			</div>
 		);
 	}
