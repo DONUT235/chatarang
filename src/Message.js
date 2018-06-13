@@ -11,7 +11,7 @@ function Message(props) {
 			<div style={styles.details}>
 				<div className="Metadata" style={styles.Metadata}>
 					<div style={styles.user}>{props.message.user.username}</div>
-					<div style={styles.time}>{props.message.time.toLocaleString()}</div>
+					<div style={styles.time}>{props.message.time}</div>
 				</div>
 				<div>
 					{props.message.body}

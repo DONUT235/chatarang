@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ChatHeader from './ChatHeader'
 import MessageList from './MessageList';
 import MessageForm from './MessageForm';
+import base from './base';
 
 class Chat extends Component {
 	constructor(props) {
@@ -22,6 +23,13 @@ class Chat extends Component {
 			</main>
 		);
 	}
+	componentWillMount() {
+		base.syncState('messages', {
+			context: this, 
+			state: 'messages', 
+			asArray: true, 
+		});
+	}
 	getUid() {
 		return this.uid++;
 	}
@@ -29,7 +37,7 @@ class Chat extends Component {
 		const newMessageObject = {body: newMessage};
 		newMessageObject.id = this.getUid();
 		newMessageObject.user = this.props.user;
-		newMessageObject.time = new Date();
+		newMessageObject.time = new Date().toLocaleString();
 		this.setState({messages: this.state.messages.concat([newMessageObject])});
 	};
 }
