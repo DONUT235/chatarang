@@ -47,4 +47,6 @@ class SignIn extends Component {
 	}
 }
 
+/*TODO: Style the login page!!!!*/
+
 export default SignIn;
