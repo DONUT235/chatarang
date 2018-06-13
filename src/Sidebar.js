@@ -1,27 +1,14 @@
 import React from 'react';
+import UserInfo from './UserInfo';
+import RoomList from './RoomList.js';
 
 function Sidebar(props) {
 	return (
 		<div className="Sidebar">
 			<aside style={styles.Sidebar}>
-				<div className="UserInfo" style={styles.children}>
-					<div
-						className="Avatar"
-						style={{background: 'url(https://api.adorable.io/avatars/32/davey@getfretless.com)'}}
-					></div>
-					<div className="user">{props.user.username}</div>
-					<a href="#">
-						<i className="fas fa-sign-out-alt"></i>
-					</a>
-				</div>
-				<h1 style={[styles.h1, styles.children]}>XTBC 18</h1>
-				<nav className="RoomList" style={styles.children}>
-					<h2>Rooms</h2>
-					<ul>
-						<li><a href="#">general</a></li>
-						<li><a href="#">random</a></li>
-					</ul>
-				</nav>
+				<UserInfo user={props.user} avatarUrl={'https://api.adorable.io/avatars/32/davey@getfretless.com'}/>
+				<h1 style={{...styles.h1, ...styles.children}}>XTBC 18</h1>
+				<RoomList />
 			</aside>
 		</div>
 	);
