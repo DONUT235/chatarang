@@ -3,7 +3,14 @@ import React, { Component } from 'react';
 class UserInfo extends Component {
 	constructor(props) {
 		super(props);
-		styles.Avatar.background = `url(${this.props.avatarUrl})`;
+		this.AvatarStyle = {
+			marginRight: '0.5rem',
+			height: '40px',
+			width: '40px',
+			fontSize: '1rem',
+			borderRadius: '20px',
+			background: `url(${this.props.avatarUrl})`
+		}
 	}
 	handleEnter(ev) {
 		ev.target.style.color = 'white';
@@ -17,7 +24,7 @@ class UserInfo extends Component {
 			<div className="UserInfo" style={styles.UserInfo}>
 				<div
 					className="Avatar"
-					style={styles.Avatar}
+					style={this.AvatarStyle}
 				></div>
 				<div className="user" style={styles.user}>{this.props.user.username}</div>
 				<a 
@@ -25,6 +32,7 @@ class UserInfo extends Component {
 					style={styles.a}
 					onMouseEnter={this.handleEnter}
 					onMouseLeave={this.handleExit}
+					onClick={this.props.logOut}
 				>
 					<i className="fas fa-sign-out-alt"></i>
 				</a>
@@ -58,9 +66,6 @@ const styles = {
 		fontSize: '1.2rem',
 		transition: 'color 0.25s ease-out',
 	},
-	/*.UserInfo a:hover {
-		color: white;
-	}*/
 };
 
 export default UserInfo;
