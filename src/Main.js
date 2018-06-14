@@ -5,13 +5,20 @@ import Chat from './Chat.js'
 class Main extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {current: 0};
+		this.state = {
+			current: null,
+			channels: [
+				new Channel('general', 'General chat', 0),
+				new Channel('random', 'Talk about anything you want!', 1),
+			],
+		};
+		this.state.current = this.state.channels[0];
 	}
 	render() {
 		return (
 			<div className="Main" style={styles}>
 				<Sidebar user={this.props.user} logOut={this.props.logOut} channels={channels}/>	
-				<Chat user={this.props.user} logIn={this.props.logIn} channel={channels[this.state.current]}/>
+				<Chat user={this.props.user} logIn={this.props.logIn} channel={this.state.current}/>
 			</div>
 		);
 	}
