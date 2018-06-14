@@ -7,31 +7,43 @@ import base from './base';
 class Chat extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {messages: []};
-		this.uid = 0;
+		this.state = { messages: [] };
+		this.state.uid = 0;
+		base.syncState(this.props.channel.endpoint(), {
+			context: this,
+			state: 'messages',
+			asArray: true,
+		});
+		base.syncState('messageIDs', {
+			context:this,
+			state: 'uid',
+		});
 	}
 	render() {
 		return (
 			<main className="Chat" style={styles.Chat}>
-				<ChatHeader channelName="#general" channelDescription="General chat"/>
+				<ChatHeader 
+					channel={this.props.channel} 
+				/>
 				<MessageList 
 					messages={this.state.messages}
-					channelName="#general" 
-					channelDescription="General chat"
+					channelName={this.props.channel.name} 
 				/>
 				<MessageForm addMessage={this.addMessage}/>
 			</main>
 		);
 	}
-	componentWillMount() {
+	/*componentWillMount() {
+		//general/messages creates an object called general with a property called messsages
 		base.syncState('messages', {
-			context: this, 
-			state: 'messages', 
-			asArray: true, 
+			context: this,
+			state: 'channelMessages',
+			asArray: true,
 		});
-	}
+	}*/
 	getUid() {
-		return this.uid++;
+		this.setState({uid: this.state.uid+1});
+		return this.state.uid;
 	}
 	addMessage = newMessage => {
 		const newMessageObject = {body: newMessage};

@@ -4,8 +4,8 @@ function ChatHeader(props) {
 	return (
 		<div className="ChatHeader" style={styles.ChatHeader}>
 			<div className="roomInfo">
-				<h2 style={styles.h2}>{props.channelName}</h2>
-				<p style={styles.p}>{props.channelDescription}</p>
+				<h2 style={styles.h2}>#{props.channel.name}</h2>
+				<p style={styles.p}>{props.channel.description}</p>
 			</div>
 		</div>
 	);

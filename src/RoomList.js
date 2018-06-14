@@ -6,8 +6,9 @@ function RoomList(props) {
 		<nav className={`RoomList $css(styles.RoomList)`}>
 			<h2 className={css(styles.h2)}>Rooms</h2>
 			<ul className={css(styles.ul)}>
-				<li className={css(styles.li)}><a className={css(styles.liA)} href="#">general</a></li>
-				<li className={css(styles.li)}><a className={css(styles.liA)} href="#">random</a></li>
+				{props.channels.map((channel, i) => (
+					<li className={css(styles.li)} key={channel.id}><a className={css(styles.liA)} href="#" key={channel.id}>{channel.name}</a></li>
+				))}
 			</ul>
 		</nav>
 	);

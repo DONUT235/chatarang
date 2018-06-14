@@ -5,8 +5,8 @@ function MessageList(props) {
 	return (
 		<div className="MessageList" style={styles.MessageList}>
 			<div style={styles.roomAnnouncement}>
-				<h3 style={styles.h3}>{props.channelName}</h3>
-				<p>This is the very beginning of the {props.channelName} room.</p>
+				<h3 style={styles.h3}>#{props.channelName}</h3>
+				<p>This is the very beginning of the #{props.channelName} room.</p>
 			</div>
 			{props.messages.map(message => <Message key={message.id} message={message} />)}
 		</div>
