@@ -7,7 +7,15 @@ function RoomList(props) {
 			<h2 className={css(styles.h2)}>Rooms</h2>
 			<ul className={css(styles.ul)}>
 				{props.channels.map((channel, i) => (
-					<li className={css(styles.li)} key={channel.id}><a className={css(styles.liA)} href="#" key={channel.id}>{channel.name}</a></li>
+					<li className={css(styles.li)} key={channel.id}>
+						<a 
+							className={css(styles.liA)} 
+							href="#" 
+							onClick={ev=>props.switchChannel(channel)}
+						>
+							{channel.name}
+						</a>
+					</li>
 				))}
 			</ul>
 		</nav>

@@ -14,11 +14,14 @@ class Main extends Component {
 		};
 		this.state.current = this.state.channels[0];
 	}
+	switchChannel = channel => {
+		this.setState({current: channel});
+	}
 	render() {
 		return (
 			<div className="Main" style={styles}>
-				<Sidebar user={this.props.user} logOut={this.props.logOut} channels={channels}/>	
-				<Chat user={this.props.user} logIn={this.props.logIn} channel={this.state.current}/>
+				<Sidebar user={this.props.user} logOut={this.props.logOut} channels={this.state.channels} switchChannel={this.switchChannel}/>	
+				<Chat user={this.props.user} logIn={this.props.logIn} channel={this.state.current} key={this.state.current.id}/>
 			</div>
 		);
 	}
@@ -32,11 +35,6 @@ function Channel(name, description, id) {
 Channel.prototype.endpoint = function() {
 	return `${this.name}/messages`;
 }
-
-const channels = [
-	new Channel('general', 'General chat', 0),
-	new Channel('random', 'Talk about anything you want!', 1),
-];
 
 const styles = {
 	display: 'flex',

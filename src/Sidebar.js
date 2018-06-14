@@ -11,7 +11,7 @@ function Sidebar(props) {
 					logOut={props.logOut}
 				/>
 				<h1 style={{...styles.h1, ...styles.children}}>XTBC 18</h1>
-				<RoomList channels={props.channels}/>
+				<RoomList channels={props.channels} switchChannel={props.switchChannel}/>
 			</aside>
 		</div>
 	);

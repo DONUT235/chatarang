@@ -9,14 +9,14 @@ class Chat extends Component {
 		super(props);
 		this.state = { messages: [] };
 		this.state.uid = 0;
-		base.syncState(this.props.channel.endpoint(), {
-			context: this,
-			state: 'messages',
-			asArray: true,
-		});
 		base.syncState('messageIDs', {
 			context:this,
 			state: 'uid',
+		});
+		this.ref = base.syncState(this.props.channel.endpoint(), {
+			context: this,
+			state: 'messages',
+			asArray: true,
 		});
 	}
 	render() {
@@ -33,14 +33,9 @@ class Chat extends Component {
 			</main>
 		);
 	}
-	/*componentWillMount() {
-		//general/messages creates an object called general with a property called messsages
-		base.syncState('messages', {
-			context: this,
-			state: 'channelMessages',
-			asArray: true,
-		});
-	}*/
+	componentWillUnmount() {
+		base.removeBinding(this.ref);
+	}
 	getUid() {
 		this.setState({uid: this.state.uid+1});
 		return this.state.uid;
