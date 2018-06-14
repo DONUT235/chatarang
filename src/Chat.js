@@ -13,6 +13,19 @@ class Chat extends Component {
 			context:this,
 			state: 'uid',
 		});
+	}
+	componentDidUpdate(prevProps, prevState) {
+		if(prevProps.channel !== this.props.channel) {
+			base.removeBinding(this.ref);
+			this.setState({messages: []});
+			this.ref = base.syncState(this.props.channel.endpoint(), {
+				context: this,
+				state: 'messages',
+				asArray: true,
+			});
+		}
+	}
+	componentDidMount() {
 		this.ref = base.syncState(this.props.channel.endpoint(), {
 			context: this,
 			state: 'messages',
