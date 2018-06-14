@@ -14,23 +14,22 @@ class Chat extends Component {
 			state: 'uid',
 		});
 	}
-	componentDidUpdate(prevProps, prevState) {
-		if(prevProps.channel !== this.props.channel) {
-			base.removeBinding(this.ref);
-			this.setState({messages: []});
-			this.ref = base.syncState(this.props.channel.endpoint(), {
-				context: this,
-				state: 'messages',
-				asArray: true,
-			});
-		}
-	}
-	componentDidMount() {
+	syncMessages() {
 		this.ref = base.syncState(this.props.channel.endpoint(), {
 			context: this,
 			state: 'messages',
 			asArray: true,
 		});
+	}
+	componentDidUpdate(prevProps, prevState) {
+		if(prevProps.channel !== this.props.channel) {
+			base.removeBinding(this.ref);
+			this.setState({messages: []});
+			this.syncMessages();
+		}
+	}
+	componentDidMount() {
+		this.syncMessages();
 	}
 	render() {
 		return (
