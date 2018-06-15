@@ -15,7 +15,7 @@ class Chat extends Component {
 		});
 	}
 	syncMessages() {
-		this.ref = base.syncState(this.props.channel.endpoint(), {
+		this.ref = base.syncState(`${this.props.channel.name}/messages`, {
 			context: this,
 			state: 'messages',
 			asArray: true,
@@ -44,9 +44,6 @@ class Chat extends Component {
 				<MessageForm addMessage={this.addMessage}/>
 			</main>
 		);
-	}
-	componentWillUnmount() {
-		base.removeBinding(this.ref);
 	}
 	getUid() {
 		this.setState({uid: this.state.uid+1});

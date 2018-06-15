@@ -1,28 +1,45 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, css } from 'aphrodite';
+import RoomForm from './RoomForm';
 
-function RoomList({switchChannel, channels}) {
-	return (
-		<nav className={`RoomList $css(styles.RoomList)`}>
-			<h2 className={css(styles.h2)}>Rooms</h2>
-			<ul className={css(styles.ul)}>
-				{Object.keys(channels).map(name  => {
-					const channel = channels[name];
-					return (
-						<li className={css(styles.li)} key={channel.id}>
-							<a 
-								className={css(styles.liA)} 
-								href="#" 
-								onClick={ev=>switchChannel(channel)}
-							>
-								{channel.name}
-							</a>
-						</li>
-					)
-				})}
-			</ul>
-		</nav>
-	);
+class RoomList extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {showForm : false};
+	}
+	toggleForm = ev => this.setState({showForm: !this.state.showForm});
+	render() {
+			return (
+			<nav className={`RoomList $css(styles.RoomList)`}>
+				{
+					this.state.showForm
+					?<RoomForm toggleForm={this.toggleForm} addChannel={this.props.addChannel}/>
+					:<div className={css(styles.heading)}>
+						<h2 className={css(styles.h2)}>Rooms</h2>
+						<button className={css(styles.button)} onClick={this.toggleForm}>
+							<i className="fas fa-plus-circle" title="Add room"></i>
+						</button>
+					</div>
+				}
+				<ul className={css(styles.ul)}>
+					{Object.keys(this.props.channels).map(name => {
+						const channel = this.props.channels[name];
+						return (
+							<li className={css(styles.li)} key={channel.name}>
+								<a 
+									className={css(styles.liA)} 
+									href="#" 
+									onClick={ev=>this.props.switchChannel(channel)}
+								>
+									{channel.name}
+								</a>
+							</li>
+						)
+					})}
+				</ul>
+			</nav>
+		);
+	}
 }
 
 const styles = StyleSheet.create({
@@ -32,6 +49,27 @@ const styles = StyleSheet.create({
 	
 	h2: {
 		fontSize: '1rem',
+	},
+
+	heading: {
+		display: 'flex',
+		justifyContent: 'flex-start',
+		alignItems: 'center',
+	},
+
+	button: {
+		border: 0,
+		backgroundColor: 'transparent',
+		outline: 0,
+		paddingLeft: 10,
+		fontSize: '1rem',
+		color: 'rgba(255,255,255, 0.4)',
+		cursor: 'pointer',
+		transition: 'color 0.25s ease-out',
+
+		':hover': {
+			color: 'white',
+		}
 	},
 
 	ul: {

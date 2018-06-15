@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, css } from 'aphrodite'
+import { StyleSheet, css } from 'aphrodite';
+import { auth } from './base'; 
 
 function SignOut(props) {
 	const styles = StyleSheet.create({
@@ -20,7 +21,7 @@ function SignOut(props) {
 		<button 
 			href="#"
 			className={css(styles.button)}
-			onClick={props.logOut}
+			onClick={() => auth.signOut()}
 		>
 			<i className="fas fa-sign-out-alt"></i>
 		</button>

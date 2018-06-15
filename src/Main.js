@@ -1,21 +1,31 @@
 import React, { Component } from 'react';
-import Sidebar from './Sidebar.js'
-import Chat from './Chat.js'
+import Sidebar from './Sidebar.js';
+import Chat from './Chat.js';
+import base from './base';
 
 class Main extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			current: null,
-			channels: {
-				general: new Channel('general', 'General chat', 0),
-				random: new Channel('random', 'Talk about anything you want!', 1),
-			},
+			channels: {},
 		};
-		this.state.current = this.state.channels.general;
+		this.ref = null;
+		this.state.current = new Channel('general', 'General chat'); 
+	}
+	addChannel = (name, description) => {
+		const newChannels = {...this.state.channels}
+		newChannels[name] = new Channel(name, description);
+		this.setState({channels: newChannels});
 	}
 	switchChannel = channel => {
 		this.setState({current: channel});
+	}
+	componentDidMount() {
+		this.ref = base.syncState('channels', {
+			context: this,
+			state: 'channels',
+		});
 	}
 	render() {
 		return (
@@ -25,6 +35,7 @@ class Main extends Component {
 					logOut={this.props.logOut} 
 					channels={this.state.channels} 
 					switchChannel={this.switchChannel}
+					addChannel={this.addChannel}
 				/>	
 				<Chat 
 					user={this.props.user} 
@@ -36,13 +47,9 @@ class Main extends Component {
 	}
 }
 
-function Channel(name, description, id) {
+function Channel(name, description) {
 	this.name = name;
 	this.description = description;
-	this.id = id;
-}
-Channel.prototype.endpoint = function() {
-	return `${this.name}/messages`;
 }
 
 const styles = {

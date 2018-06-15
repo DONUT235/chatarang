@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
+import { auth, googleProvider } from './base';
+import SignUp from './SignUp';
 
 class SignIn extends Component {
 	state = {
 		username: '',
 		email: '',
 		uid: null,
+		signUp: false,
+		password: '',
+		confirmPassword: ''
 	};
 	handleChange(field) {
 		return ev =>  {
@@ -13,37 +18,57 @@ class SignIn extends Component {
 			this.setState(o);
 		}
 	};
-	handleSubmit = ev => {
-		ev.preventDefault();
-		this.props.logIn({
-			uid: 10909, /*TODO: Generate UIDs in a smarter way*/
-			username: this.state.username,
-			email: this.state.email,
-		});
+	passwordAuthenticate = ev => {
+		//TODO: Do stuff
 	}
+	googleAuthenticate = () => {
+		auth.signInWithPopup(googleProvider).then(result => {
+			console.log(result.user);
+			//this.props.logIn(result.user);
+		});
+	};
+	toggleSignUp = () => this.setState({signUp: !this.state.signUp});
 	render() {
-		return (
-			<div>
-				<h1>You are not logged in.</h1>
-				<form onSubmit={this.handleSubmit}>
-					<input 
-						type="email" 
-						placeholder="Email address" 
-						name="email" 
-						value={this.state.email}
-						onChange={this.handleChange('email')}
-					/>
-					<input 
-						type="text" 
-						placeholder="Username" 
-						name="username" 
-						value={this.state.username}
-						onChange={this.handleChange('username')}
-					/>
-					<input type="submit" value="Log In"/>
-				</form>
-			</div>
-		);
+		if(this.state.signUp) {
+			return (
+				<SignUp 
+					toggleSignUp={this.toggleSignUp} 
+					logIn={this.props.logIn}
+					unsub={this.props.unsub}
+					sub={this.props.sub}
+				/>
+			)
+		} else {
+				return (
+				<div className="SignIn">
+					<h1>You are not logged in.</h1>
+					<form onSubmit={this.passwordAuthenticate}>
+						<input 
+							type="email" 
+							placeholder="Email address" 
+							name="email" 
+							value={this.state.email}
+							onChange={this.handleChange('email')}
+						/>
+						<input 
+							type="password" 
+							placeholder="Password" 
+							name="password" 
+							value={this.state.password}
+							onChange={this.handleChange('password')}
+						/>
+						<input type="submit" value="Log In"/>
+					</form>
+					<button onClick={()=>this.googleAuthenticate()}>
+						<i className="fab fa-google"></i>
+						Sign in with Google
+					</button>
+					
+					<div>Can't do that? Create an account!</div>
+					<button onClick={this.toggleSignUp}>Sign up for Slacc</button>
+				</div>
+			);
+		}
 	}
 }
 
