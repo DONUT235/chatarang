@@ -4,27 +4,33 @@ import SignUp from './SignUp';
 
 class SignIn extends Component {
 	state = {
-		username: '',
 		email: '',
 		uid: null,
 		signUp: false,
 		password: '',
-		confirmPassword: ''
+		error: '',
 	};
-	handleChange(field) {
-		return ev =>  {
-			let o = {};
-			o[field] = ev.target.value;
-			this.setState(o);
-		}
+	handleChange = ev =>  {
+		let o = {};
+		o[ev.target.name] = ev.target.value;
+		this.setState(o);
 	};
 	passwordAuthenticate = ev => {
-		//TODO: Do stuff
+		ev.preventDefault();
+		auth.signInWithEmailAndPassword(this.state.email,this.state.password)
+		.catch(error => {
+			console.log(error);
+			this.setState({error: 'Incorrect email or password'})
+		});
 	}
 	googleAuthenticate = () => {
-		auth.signInWithPopup(googleProvider).then(result => {
-			console.log(result.user);
-			//this.props.logIn(result.user);
+		auth.signInWithPopup(googleProvider).catch(error => {
+			if(error.code === 'auth/account-exists-with-different-credential') {
+				this.setState({email: error.email});
+				this.setState({error: 'Please sign in with the password form above.'});
+			} else if(error.code === 'auth/popup-blocked') {
+				this.setState({error: 'Please unblock popups to sign in with Google.'});
+			}
 		});
 	};
 	toggleSignUp = () => this.setState({signUp: !this.state.signUp});
@@ -48,14 +54,14 @@ class SignIn extends Component {
 							placeholder="Email address" 
 							name="email" 
 							value={this.state.email}
-							onChange={this.handleChange('email')}
+							onChange={this.handleChange}
 						/>
 						<input 
 							type="password" 
 							placeholder="Password" 
 							name="password" 
 							value={this.state.password}
-							onChange={this.handleChange('password')}
+							onChange={this.handleChange}
 						/>
 						<input type="submit" value="Log In"/>
 					</form>
@@ -66,6 +72,7 @@ class SignIn extends Component {
 					
 					<div>Can't do that? Create an account!</div>
 					<button onClick={this.toggleSignUp}>Sign up for Slacc</button>
+					<div style={style.error}>{this.state.error}</div>
 				</div>
 			);
 		}
@@ -73,5 +80,10 @@ class SignIn extends Component {
 }
 
 /*TODO: Style the login page!!!!*/
+const style = {
+	error: {
+		color: 'red',
+	},
+}
 
 export default SignIn;

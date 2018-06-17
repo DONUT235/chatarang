@@ -20,9 +20,9 @@ class SignUp extends Component {
 		ev.preventDefault();
 		if(this.state.password !== this.state.confirmPassword) {
 			this.setState({errorMessage: 'The two passwords you typed do not match.'});
-		} else if(this.state.password.length == 0) {
+		} else if(this.state.password.length === 0) {
 			this.setState({errorMessage: 'Your account must have a password.'});
-		} else if(this.state.email.length == 0) {
+		} else if(this.state.email.length === 0) {
 			this.setState({errorMessage: 'You must provide an email address.'});
 		} else {
 			this.props.unsub();
@@ -46,9 +46,9 @@ class SignUp extends Component {
 				error => {
 					if(error.code === 'auth/email-already-in-use') {
 						this.setState({errorMessage: 'That email address is already in use.'});
-					} else if(error.code == 'auth/invalid-email') {
+					} else if(error.code === 'auth/invalid-email') {
 						this.setState({errorMessage: 'The email address you provided is invalid.'});
-					} else if(error.code == 'auth/weak-password') {
+					} else if(error.code === 'auth/weak-password') {
 						this.setState({errorMessage: 'The password you provided is too short.'});
 					}
 					else {
