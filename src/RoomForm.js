@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { StyleSheet, css } from 'aphrodite';
 
 class RoomForm extends Component {
 	constructor(props) {
@@ -45,17 +46,17 @@ class RoomForm extends Component {
 						<input type="text" name="description" onChange={this.handleChange}/>
 					</p>
 					<div>
-						<button type="submit" style={style.button}>Create Room</button>
-						<button type="button" onClick={this.cancel} style={style.button}>Cancel</button>
+						<button type="submit" className={css(style.button)}>Create Room</button>
+						<button type="button" onClick={this.cancel} className={css(style.button)}>Cancel</button>
 					</div>
 				</form>
-				<span style={style.error}>{this.state.error}</span>
+				<span className={css(style.error)}>{this.state.error}</span>
 			</div>
 		);
 	}
 }
 
-const style = {
+const style = StyleSheet.create({
 	button: {
 		borderRadius: '0.8rem',
 		fontSize: '1rem',
@@ -63,10 +64,13 @@ const style = {
 		marginRight: '8px',
 		backgroundColor: 'rgb(6, 13, 45)',
 		color: 'white',
+		':focus': {
+			outline: 0,
+		},
 	},
 	error: {
 		color: 'red',
-	}
-}
+	},
+});
 
 export default RoomForm;
