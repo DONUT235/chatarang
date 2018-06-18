@@ -21,7 +21,7 @@ class RoomForm extends Component {
 	};
 	handleSubmit = ev => {
 		ev.preventDefault();
-		if((/^[^[\].$#\/]+$/).test(this.state.name)) {
+		if((/^[^[\].$#/]+$/).test(this.state.name)) {
 			this.props.addChannel(
 				this.state.name,
 				this.state.description

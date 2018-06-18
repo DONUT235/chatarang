@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import RoomForm from './RoomForm';
+import { Link } from 'react-router-dom';
 
 class RoomList extends Component {
 	constructor(props) {
@@ -26,13 +27,12 @@ class RoomList extends Component {
 						const channel = this.props.channels[name];
 						return (
 							<li className={css(styles.li)} key={channel.name}>
-								<a 
+								<Link
 									className={css(styles.liA)} 
-									href="#" 
-									onClick={ev=>this.props.switchChannel(channel)}
+									to={`/rooms/${encodeURIComponent(channel.name)}`}
 								>
 									{channel.name}
-								</a>
+								</Link>
 							</li>
 						)
 					})}

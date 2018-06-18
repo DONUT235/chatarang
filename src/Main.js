@@ -11,21 +11,35 @@ class Main extends Component {
 			channels: {},
 		};
 		this.ref = null;
-		this.state.current = new Channel('general', 'General chat'); 
+		this.state.current = new Channel('general', 'General chat');
 	}
 	addChannel = (name, description) => {
 		const newChannels = {...this.state.channels}
 		newChannels[name] = new Channel(name, description);
 		this.setState({channels: newChannels});
 	}
-	switchChannel = channel => {
-		this.setState({current: channel});
+	switchChannel = roomName => {
+		const decodedName = decodeURIComponent(roomName);
+		if(this.state.channels[decodedName] != undefined) {
+			this.setState({current: this.state.channels[decodedName]});
+		} else {
+			/*console.log(decodedName);
+			console.log(this.state.channels);*/
+		}
 	}
 	componentDidMount() {
 		this.ref = base.syncState('channels', {
 			context: this,
 			state: 'channels',
+			then: () => {
+				this.switchChannel(this.props.match.params.roomName);
+			},
 		});
+	}
+	componentDidUpdate(prevProps) {
+		if(prevProps.match.params.roomName !== this.props.match.params.roomName) {
+				this.switchChannel(this.props.match.params.roomName);
+		}
 	}
 	render() {
 		return (
@@ -34,12 +48,10 @@ class Main extends Component {
 					user={this.props.user} 
 					logOut={this.props.logOut} 
 					channels={this.state.channels} 
-					switchChannel={this.switchChannel}
 					addChannel={this.addChannel}
 				/>	
 				<Chat 
 					user={this.props.user} 
-					logIn={this.props.logIn} 
 					channel={this.state.current}
 				/>
 			</div>

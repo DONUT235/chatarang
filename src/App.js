@@ -3,6 +3,9 @@ import Main from './Main';
 import SignIn from './SignIn';
 import './App.css';
 import { auth } from './base';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import 'firebase/auth';
+import firebase from 'firebase/app';
 
 class App extends Component {
 	constructor(props) {
@@ -15,6 +18,7 @@ class App extends Component {
 			},
 		}
 		this.sub();
+		auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 	}
 	sub = () => {
 		this.unsub = auth.onAuthStateChanged(user => {
@@ -31,6 +35,7 @@ class App extends Component {
 				user: {
 					email: '',
 					username: '',
+					uid: null,
 				}
 			});
 			localStorage.removeItem('user');
@@ -45,26 +50,36 @@ class App extends Component {
 			}
 		});
 	};
+	isLoggedIn = () => {
+		return this.state.user.uid != null;
+	}
 	render() {
 		return (
 			<div className="App">
-				{
-					this.state.loading
-						?'Loading...'
-						:(
-							this.state.user.username !== ''
+					<Switch>
+						<Route path="/rooms/:roomName" render={navProps => (
+							this.isLoggedIn()
 								?<Main 
 									user={this.state.user}
-									logIn={this.logIn}
 									logOut={this.logOut}
+									{...navProps}
 								/>
-							:<SignIn 
-								logIn={this.logIn} 
-								unsub={this.unsub}
-								sub={this.sub}
-							/>
-						)
-				}
+								:<Redirect to="/login" />
+						)}/>
+						<Route render={navProps => (
+							this.isLoggedIn()
+								?<Redirect to="/rooms/general" />
+								:<SignIn 
+									logIn={this.logIn} 
+									unsub={this.unsub}
+									sub={this.sub}
+									{...navProps}
+								/>
+						)}/>
+						<Route render={navProps => (
+							<Redirect to="/rooms/general" />
+						)}/>
+					</Switch>
 			</div>
 		);
 	}
