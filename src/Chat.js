@@ -15,7 +15,7 @@ class Chat extends Component {
 		});
 	}
 	syncMessages() {
-		this.ref = base.syncState(`${this.props.channel.name}/messages`, {
+		this.ref = base.syncState(`channels/${this.props.channel.name}/messages`, {
 			context: this,
 			state: 'messages',
 			asArray: true,
