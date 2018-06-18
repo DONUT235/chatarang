@@ -14,10 +14,6 @@ class App extends Component {
 				uid:  null,
 			},
 		}
-		let prevUser = localStorage.getItem('user');
-		if(prevUser) {
-			this.state.user = JSON.parse(prevUser);
-		}
 		this.sub();
 	}
 	sub = () => {
@@ -41,7 +37,6 @@ class App extends Component {
 		});
 	};
 	logIn = user => {
-		localStorage.setItem('user',JSON.stringify(user));
 		this.setState({
 			user: {
 				username: user.displayName ? user.displayName : user.email,
