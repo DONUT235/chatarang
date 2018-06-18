@@ -46,33 +46,34 @@ class SignIn extends Component {
 			)
 		} else {
 				return (
-				<div className="SignIn">
-					<h1>You are not logged in.</h1>
-					<form onSubmit={this.passwordAuthenticate}>
-						<input 
-							type="email" 
-							placeholder="Email address" 
-							name="email" 
-							value={this.state.email}
-							onChange={this.handleChange}
-						/>
-						<input 
-							type="password" 
-							placeholder="Password" 
-							name="password" 
-							value={this.state.password}
-							onChange={this.handleChange}
-						/>
-						<input type="submit" value="Log In"/>
-					</form>
-					<button onClick={()=>this.googleAuthenticate()}>
-						<i className="fab fa-google"></i>
-						Sign in with Google
-					</button>
-					
-					<div>Can't do that? Create an account!</div>
-					<button onClick={this.toggleSignUp}>Sign up for Slacc</button>
-					<div style={style.error}>{this.state.error}</div>
+				<div className="SignIn" style={style.signIn}>
+					<div>
+						<h1>You are not logged in.</h1>
+						<form onSubmit={this.passwordAuthenticate}>
+							<input 
+								type="email" 
+								placeholder="Email address" 
+								name="email" 
+								value={this.state.email}
+								onChange={this.handleChange}
+							/>
+							<input 
+								type="password" 
+								placeholder="Password" 
+								name="password" 
+								value={this.state.password}
+								onChange={this.handleChange}
+							/>
+							<input type="submit" value="Log In"/>
+						</form>
+						<div style={style.error}>{this.state.error}</div>
+						<button onClick={()=>this.googleAuthenticate()} style={style.google}>
+							<i className="fab fa-google" style={style.googleIcon}></i>
+							Sign in with Google
+						</button>
+						<p>Don't have an account? Sign up today!</p>
+						<button onClick={this.toggleSignUp} style={style.signUp}>Sign up for Slacc</button>
+					</div>
 				</div>
 			);
 		}
@@ -84,6 +85,39 @@ const style = {
 	error: {
 		color: 'red',
 	},
+	signIn: {
+		display: 'flex',
+		position: 'absolute',
+		width: '100%',
+		height: '100%',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	googleIcon: {
+		position: 'relative',
+		right: '0.5em',
+	},
+	google: {
+		position: 'relative',
+		marginTop: '2rem',
+		width: '75%',
+		left: '0%',
+		marginLeft: '12.5%',
+		backgroundColor: 'blue',
+		color: 'white',
+		borderRadius: '0.5rem',
+		height: '2rem',
+		border: 0,
+	},
+	signUp: {
+		width: '100%',
+		height: '3rem',
+		fontSize: '2rem',
+		border: 0,
+		borderRadius: '2rem',
+		color: 'white',
+		backgroundColor: 'coral',
+	}
 }
 
 export default SignIn;

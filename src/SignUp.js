@@ -60,52 +60,91 @@ class SignUp extends Component {
 	}
 	render() {
 		return (
-			<div>
-				<h1>Create a new Slacc account!</h1>
-				<form onSubmit={this.addAccount}>
-					<p>
-						<label>What should we call you?</label>
-						<input
-							type="text"
-							name="username"
-							value={this.state.username}
-							onChange={this.handleChange('username')}
-						/>
-					</p>
-					<p>
-						<label>Email address: </label>
-						<input
-							type="email"
-							name="email"
-							value={this.state.email}
-							onChange={this.handleChange('email')}
-						/>
-					</p>
-					<p>
-						<label>Password: </label>
-						<input
-							type="password"
-							name="password"
-							value={this.state.password}
-							onChange={this.handleChange('password')}
-						/>
-					</p>
-					<p>
-						<label>Confirm password: </label>
-						<input
-							type="password"
-							name="confirmPassword"
-							value={this.state.confirmPassword}
-							onChange={this.handleChange('confirmPassword')}
-						/>
-					</p>
-					<input type="submit" value="Create account"/>
-					<button onClick={this.props.toggleSignUp}>Cancel</button>
-				</form>
-				<p>{this.state.errorMessage}</p>
+			<div style={style.signUp} className="SignUp">
+				<div>
+					<h1>Create a new Slacc account!</h1>
+					<form onSubmit={this.addAccount}>
+						<p>
+							<label>What should we call you?</label>
+							<input
+								type="text"
+								name="username"
+								value={this.state.username}
+								onChange={this.handleChange('username')}
+							/>
+						</p>
+						<p>
+							<label>Email address: </label>
+							<input
+								type="email"
+								name="email"
+								value={this.state.email}
+								onChange={this.handleChange('email')}
+							/>
+						</p>
+						<p>
+							<label>Password: </label>
+							<input
+								type="password"
+								name="password"
+								value={this.state.password}
+								onChange={this.handleChange('password')}
+							/>
+						</p>
+						<p>
+							<label>Confirm password: </label>
+							<input
+								type="password"
+								name="confirmPassword"
+								value={this.state.confirmPassword}
+								onChange={this.handleChange('confirmPassword')}
+							/>
+						</p>
+						<div style={style.buttonContainer}>
+							<input type="submit" value="Create account" style={style.submitButton}/>
+							<button 
+								onClick={this.props.toggleSignUp} 
+								style={style.cancelButton}
+							>
+								Cancel
+							</button>
+						</div>
+					</form>
+					<p>{this.state.errorMessage}</p>
+				</div>
 			</div>
 		);
 	}
 }
+
+function ButtonStyle(color, margin) {
+	this.width = '45%';
+	this.color = 'white';
+	this.border = '2px solid black';
+	this.backgroundColor = color;
+	this.marginRight = margin;
+}
+
+const style = {
+	signUp: {
+		display: 'flex',
+		position: 'absolute',
+		width: '100%',
+		height: '100%',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	error: {
+		color: 'red',
+	},
+	buttonContainer: {
+		height: '2rem',
+		display: 'flex',
+		flexDirection: 'row',
+	},
+	submitButton: new ButtonStyle('blue', '5%'),
+	cancelButton: new ButtonStyle('red', '0%'),
+}
+
 
 export default SignUp;
