@@ -1,21 +1,40 @@
 import React from 'react';
 import UserInfo from './UserInfo';
 import RoomList from './RoomList.js';
+import RoomForm from './RoomForm';
+import { Route, Switch } from 'react-router-dom';
 
 function Sidebar(props) {
 	return (
 		<div className="Sidebar">
 			<aside style={styles.Sidebar}>
-				<UserInfo 
-					user={props.user} 
-					logOut={props.logOut}
-				/>
-				<h1 style={{...styles.h1, ...styles.children}}>XTBC 18</h1>
-				<RoomList 
-					channels={props.channels} 
-					switchChannel={props.switchChannel}
-					addChannel={props.addChannel}
-				/>
+				<Switch>
+					<Route path="/rooms/:roomName/newChannel/" render={navProps => (
+						<RoomForm 
+							addChannel={props.addChannel}		
+							allUsers={props.allUsers}
+							user={props.user}
+							{...navProps}
+						/>
+					)}/>
+					<Route render={navProps => (
+						<div>
+							<UserInfo 
+								user={props.user} 
+								logOut={props.logOut}
+							/>
+							<h1 style={{...styles.h1, ...styles.children}}>XTBC 18</h1>
+							<RoomList 
+								channels={props.channels} 
+								switchChannel={props.switchChannel}
+								addChannel={props.addChannel}
+								history={props.history}
+								allUsers={props.allUsers}
+								user={props.user}
+							/>
+						</div>
+					)}/>
+				</Switch>
 			</aside>
 		</div>
 	);

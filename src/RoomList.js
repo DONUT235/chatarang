@@ -1,47 +1,35 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
-import RoomForm from './RoomForm';
 import { Link } from 'react-router-dom';
 
-class RoomList extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {showForm : false};
-	}
-	toggleForm = ev => this.setState({showForm: !this.state.showForm});
-	render() {
-			return (
-			<nav className={`RoomList $css(styles.RoomList)`}>
-				{
-					this.state.showForm
-					?<RoomForm toggleForm={this.toggleForm} addChannel={this.props.addChannel}/>
-					:<div className={css(styles.heading)}>
-						<h2 className={css(styles.h2)}>Rooms</h2>
-						<button className={css(styles.button)} onClick={this.toggleForm}>
-							<i className="fas fa-plus-circle" title="Add room"></i>
-						</button>
-					</div>
-				}
-				<ul className={css(styles.ul)}>
-					{Object.keys(this.props.channels).map(name => {
-						const channel = this.props.channels[name];
-						return (
-							channel
-								?<li className={css(styles.li)} key={channel.name}>
-									<Link
-										className={css(styles.liA)} 
-										to={`/rooms/${encodeURIComponent(channel.name)}`}
-									>
-										{channel.name}
-									</Link>
-								</li>
-								:null
-						);
-					})}
-				</ul>
-			</nav>
-		);
-	}
+function RoomList(props) {
+	return (
+		<nav className={`RoomList $css(styles.RoomList)`}>
+			<div className={css(styles.heading)}>
+				<h2 className={css(styles.h2)}>Rooms</h2>
+				<Link className={css(styles.button)} to="newChannel/">
+					<i className="fas fa-plus-circle" title="Add room"></i>
+				</Link>
+			</div>
+			<ul className={css(styles.ul)}>
+				{Object.keys(props.channels).map(name => {
+					const channel = props.channels[name];
+					return (
+						channel && (!channel.isPrivate || channel.users[props.user.uid])
+							?<li className={css(styles.li)} key={channel.name}>
+								<Link
+									className={css(styles.liA)} 
+									to={`/rooms/${encodeURIComponent(channel.name)}/`}
+								>
+									{channel.name}
+								</Link>
+							</li>
+							:null
+					);
+				})}
+			</ul>
+		</nav>
+	);
 }
 
 const styles = StyleSheet.create({

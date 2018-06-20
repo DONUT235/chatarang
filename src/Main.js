@@ -13,9 +13,10 @@ class Main extends Component {
 		this.ref = null;
 		this.state.current = new Channel('', '');
 	}
-	addChannel = (name, description) => {
+	addChannel = (name, description, isPrivate, isDM, users) => {
 		const newChannels = {...this.state.channels}
-		newChannels[name] = new Channel(name, description);
+		newChannels[name] = new Channel(name, description, isPrivate, isDM, users);
+		console.log(newChannels);
 		this.setState({channels: newChannels});
 	}
 	removeChannel = channel => {
@@ -69,23 +70,32 @@ class Main extends Component {
 					logOut={this.props.logOut} 
 					channels={this.state.channels} 
 					addChannel={this.addChannel}
+					history={this.props.history}
+					allUsers={this.props.allUsers}
 				/>
 				<Chat 
 					user={this.props.user} 
 					channel={this.state.current}
 					removeChannel={this.removeChannel}
+					allUsers={this.props.allUsers}
 				/>
 			</div>
 		);
 	}
 }
 
-function Channel(name, description) {
+function Channel(name, description, isPrivate, isDM, users) {
 	this.name = name;
 	this.description = description;
-	this.dm = false;
-	this.private = false;
-	this.users = [];
+	if(isPrivate) {
+		this.isPrivate = true;
+		this.dm = isDM;
+		this.users = users;
+	} else {
+		this.dm = false;
+		this.isPrivate = false;
+		this.users = {};
+	}
 }
 
 const styles = {
