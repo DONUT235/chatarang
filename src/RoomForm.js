@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
 		height: '100vh',
 		width: '100vw',
 		backgroundColor: '#f6f6f6',
+		zIndex: '1',
 	},
 
 	error: {
@@ -197,6 +198,7 @@ const styles = StyleSheet.create({
 		width: '10rem',
 		cursor: 'pointer',
 		outline: 0,
+		border: 0,
 	},
 
 	cancel: {

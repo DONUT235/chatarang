@@ -97,7 +97,6 @@ function Channel(name, description, isPrivate, isDM, users) {
 		this.isPrivate = true;
 		this.dm = isDM;
 		this.users = users;
-		
 	} else {
 		this.dm = false;
 		this.isPrivate = false;
