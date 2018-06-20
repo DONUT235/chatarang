@@ -18,22 +18,33 @@ class Main extends Component {
 		newChannels[name] = new Channel(name, description);
 		this.setState({channels: newChannels});
 	}
+	removeChannel = channel => {
+		const channels = {...this.state.channels};
+		channels[channel.name] = null;
+		this.setState(
+			{channels: channels},
+			this.loadValidChannel
+		);
+	}
+	loadValidChannel = () => {
+		const keys = Object.keys(this.state.channels);
+		console.log(keys);
+		const validChannel = keys.find(channel => this.state.channels[channel]);
+		if(validChannel) {
+			this.props.history.push('/rooms/'+encodeURIComponent(validChannel));
+		} else {
+			this.setState(
+				{channels: {general: new Channel('general', 'General chat')}},
+				() => this.props.history.push('/rooms/general')
+			);
+		}
+	}
 	switchChannel = roomName => {
 		const decodedName = decodeURIComponent(roomName);
 		if(this.state.channels[decodedName] != undefined) {
 			this.setState({current: this.state.channels[decodedName]});
 		} else {
-			/*console.log(decodedName);
-			console.log(this.state.channels);*/
-			const keys = Object.keys(this.state.channels);
-			if(keys.length > 0) {
-				this.props.history.push('/rooms/'+encodeURIComponent(Object.keys(this.state.channels)[0]));
-			} else {
-				this.setState(
-					{channels: {general: new Channel('general', 'General chat')}},
-					() => this.props.history.push('/rooms/general')
-				);
-			}
+			this.loadValidChannel();
 		}
 	};
 	componentDidMount() {
@@ -58,10 +69,11 @@ class Main extends Component {
 					logOut={this.props.logOut} 
 					channels={this.state.channels} 
 					addChannel={this.addChannel}
-				/>	
+				/>
 				<Chat 
 					user={this.props.user} 
 					channel={this.state.current}
+					removeChannel={this.removeChannel}
 				/>
 			</div>
 		);

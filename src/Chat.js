@@ -36,6 +36,7 @@ class Chat extends Component {
 			<main className="Chat" style={styles.Chat}>
 				<ChatHeader 
 					channel={this.props.channel} 
+					removeChannel={this.props.removeChannel}
 				/>
 				<MessageList 
 					messages={this.state.messages}

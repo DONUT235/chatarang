@@ -26,15 +26,17 @@ class RoomList extends Component {
 					{Object.keys(this.props.channels).map(name => {
 						const channel = this.props.channels[name];
 						return (
-							<li className={css(styles.li)} key={channel.name}>
-								<Link
-									className={css(styles.liA)} 
-									to={`/rooms/${encodeURIComponent(channel.name)}`}
-								>
-									{channel.name}
-								</Link>
-							</li>
-						)
+							channel
+								?<li className={css(styles.li)} key={channel.name}>
+									<Link
+										className={css(styles.liA)} 
+										to={`/rooms/${encodeURIComponent(channel.name)}`}
+									>
+										{channel.name}
+									</Link>
+								</li>
+								:null
+						);
 					})}
 				</ul>
 			</nav>
