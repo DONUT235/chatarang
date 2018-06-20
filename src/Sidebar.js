@@ -14,6 +14,7 @@ function Sidebar(props) {
 							addChannel={props.addChannel}		
 							allUsers={props.allUsers}
 							user={props.user}
+							allChannels={props.allChannels}
 							{...navProps}
 						/>
 					)}/>
@@ -25,11 +26,10 @@ function Sidebar(props) {
 							/>
 							<h1 style={{...styles.h1, ...styles.children}}>XTBC 18</h1>
 							<RoomList 
-								channels={props.channels} 
+								channels={props.legalChannels} 
 								switchChannel={props.switchChannel}
 								addChannel={props.addChannel}
 								history={props.history}
-								allUsers={props.allUsers}
 								user={props.user}
 							/>
 						</div>

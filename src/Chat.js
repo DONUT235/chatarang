@@ -22,27 +22,37 @@ class Chat extends Component {
 		});
 	}
 	componentDidUpdate(prevProps, prevState) {
-		if(prevProps.channel !== this.props.channel) {
+		if(this.props.channel.isPrivate && !this.props.channel.users[this.props.user.uid]) {
+			console.log('foo');
+			this.props.loadValidChannel();
+		} else if(prevProps.channel !== this.props.channel) {
 			base.removeBinding(this.ref);
 			this.setState({messages: []});
 			this.syncMessages();
 		}
 	}
 	componentDidMount() {
-		this.syncMessages();
+		if(this.props.channel.isPrivate && !this.props.channel.users[this.props.user.uid]) {
+			console.log('foo');
+			this.props.loadValidChannel();
+		} else {
+			this.syncMessages();
+		}
 	}
 	render() {
 		return (
 			<main className="Chat" style={styles.Chat}>
-				<ChatHeader 
-					channel={this.props.channel} 
-					removeChannel={this.props.removeChannel}
-				/>
-				<MessageList 
-					messages={this.state.messages}
-					channelName={this.props.channel.name} 
-				/>
-				<MessageForm addMessage={this.addMessage}/>
+				<div style={styles.Chat}>
+					<ChatHeader 
+						channel={this.props.channel} 
+						removeChannel={this.props.removeChannel}
+					/>
+					<MessageList 
+						messages={this.state.messages}
+						channelName={this.props.channel.name} 
+					/>
+					<MessageForm addMessage={this.addMessage}/>
+				</div>
 			</main>
 		);
 	}
@@ -53,7 +63,9 @@ class Chat extends Component {
 	addMessage = newMessage => {
 		const newMessageObject = {body: newMessage};
 		newMessageObject.id = this.getUid();
-		newMessageObject.user = this.props.user;
+		newMessageObject.user = {};
+		newMessageObject.user.username = this.props.user.username;
+		newMessageObject.user.avatarURL = this.props.user.avatarURL;
 		newMessageObject.time = new Date().toLocaleString();
 		this.setState({messages: this.state.messages.concat([newMessageObject])});
 	};

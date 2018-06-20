@@ -15,16 +15,14 @@ function RoomList(props) {
 				{Object.keys(props.channels).map(name => {
 					const channel = props.channels[name];
 					return (
-						channel && (!channel.isPrivate || channel.users[props.user.uid])
-							?<li className={css(styles.li)} key={channel.name}>
-								<Link
-									className={css(styles.liA)} 
-									to={`/rooms/${encodeURIComponent(channel.name)}/`}
-								>
-									{channel.name}
-								</Link>
-							</li>
-							:null
+						<li className={css(styles.li)} key={channel.name}>
+							<Link
+								className={css(styles.liA)} 
+								to={`/rooms/${encodeURIComponent(channel.name)}/`}
+							>
+								{channel.name}
+							</Link>
+						</li>
 					);
 				})}
 			</ul>

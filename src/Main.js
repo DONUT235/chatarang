@@ -16,7 +16,6 @@ class Main extends Component {
 	addChannel = (name, description, isPrivate, isDM, users) => {
 		const newChannels = {...this.state.channels}
 		newChannels[name] = new Channel(name, description, isPrivate, isDM, users);
-		console.log(newChannels);
 		this.setState({channels: newChannels});
 	}
 	removeChannel = channel => {
@@ -28,15 +27,13 @@ class Main extends Component {
 		);
 	}
 	loadValidChannel = () => {
-		const keys = Object.keys(this.state.channels);
-		console.log(keys);
-		const validChannel = keys.find(channel => this.state.channels[channel]);
-		if(validChannel) {
-			this.props.history.push('/rooms/'+encodeURIComponent(validChannel));
+		const legalChannels = this.legalChannels()
+		if(legalChannels.length > 0) {
+			this.props.history.push('/rooms/'+encodeURIComponent(legalChannels[0].name)+'/');
 		} else {
 			this.setState(
 				{channels: {general: new Channel('general', 'General chat')}},
-				() => this.props.history.push('/rooms/general')
+				() => this.props.history.push('/rooms/general/')
 			);
 		}
 	}
@@ -47,6 +44,14 @@ class Main extends Component {
 		} else {
 			this.loadValidChannel();
 		}
+	};
+	legalChannels = () => {
+		return Object.keys(this.state.channels).filter(channel => (
+			this.hasAccess(this.state.channels[channel])
+		)).map(channel => this.state.channels[channel]);
+	};
+	hasAccess = channel => {
+		return channel && (!channel.isPrivate || channel.users[this.props.user.uid]);
 	};
 	componentDidMount() {
 		this.ref = base.syncState('channels', {
@@ -68,16 +73,17 @@ class Main extends Component {
 				<Sidebar 
 					user={this.props.user} 
 					logOut={this.props.logOut} 
-					channels={this.state.channels} 
+					legalChannels={this.legalChannels()} 
 					addChannel={this.addChannel}
 					history={this.props.history}
 					allUsers={this.props.allUsers}
+					allChannels={this.state.channels}
 				/>
 				<Chat 
 					user={this.props.user} 
 					channel={this.state.current}
 					removeChannel={this.removeChannel}
-					allUsers={this.props.allUsers}
+					loadValidChannel={this.loadValidChannel}
 				/>
 			</div>
 		);
@@ -91,10 +97,16 @@ function Channel(name, description, isPrivate, isDM, users) {
 		this.isPrivate = true;
 		this.dm = isDM;
 		this.users = users;
+		
 	} else {
 		this.dm = false;
 		this.isPrivate = false;
 		this.users = {};
+	}
+	if(isDM) {
+		this.displayName = Object.keys(users).map(uid => users[uid].username).join(', ');
+	} else {
+		this.displayName = this.name;
 	}
 }
 

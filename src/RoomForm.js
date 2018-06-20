@@ -32,13 +32,10 @@ class RoomForm extends Component {
 		this.state.newChannel.users.forEach(user => {
 			users[user.value] = this.props.allUsers[user.value];
 		});
-		if(this.state.newChannel.isPrivate) {
-			if(!this.state.newChannel.users.find(user => (
-				user.value===this.props.user.uid
-			))) {
-				this.setState({error: 'You cannot create private rooms which you cannot access'});
-				return;
-			}
+		users[this.props.user.uid] = this.props.user;
+		if(this.props.allChannels[this.state.newChannel.name]) {
+			this.setState({error: 'That channel already exists.'});
+			return;
 		}
 		if((/^[^[\].$#/]+$/).test(this.state.newChannel.name)) {
 			this.props.addChannel(
@@ -60,6 +57,9 @@ class RoomForm extends Component {
 			label: `${this.props.allUsers[uid].username}`,
 			value: uid,
 		}));
+	}
+	goBack = () => {
+		this.props.history.push(`/rooms/${this.props.match.params.roomName}/`);
 	}
 	render() {
 		return (
@@ -107,7 +107,7 @@ class RoomForm extends Component {
 						</p>
 						<div className={css(styles.buttonContainer)}>
 							<button type="submit" className={css(styles.button)}>Create Room</button>
-							<button type="button" onClick={this.props.history.goBack} className={css(styles.button)}>Cancel</button>
+							<button type="button" onClick={this.goBack} className={css(styles.button)}>Cancel</button>
 						</div>
 					</form>
 					<span className={css(styles.error)}>{this.state.error}</span>
