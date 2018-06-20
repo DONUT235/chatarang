@@ -11,7 +11,7 @@ class Main extends Component {
 			channels: {},
 		};
 		this.ref = null;
-		this.state.current = new Channel('general', 'General chat');
+		this.state.current = new Channel('', '');
 	}
 	addChannel = (name, description) => {
 		const newChannels = {...this.state.channels}
@@ -25,8 +25,17 @@ class Main extends Component {
 		} else {
 			/*console.log(decodedName);
 			console.log(this.state.channels);*/
+			const keys = Object.keys(this.state.channels);
+			if(keys.length > 0) {
+				this.props.history.push('/rooms/'+encodeURIComponent(Object.keys(this.state.channels)[0]));
+			} else {
+				this.setState(
+					{channels: {general: new Channel('general', 'General chat')}},
+					() => this.props.history.push('/rooms/general')
+				);
+			}
 		}
-	}
+	};
 	componentDidMount() {
 		this.ref = base.syncState('channels', {
 			context: this,
@@ -62,6 +71,9 @@ class Main extends Component {
 function Channel(name, description) {
 	this.name = name;
 	this.description = description;
+	this.dm = false;
+	this.private = false;
+	this.users = [];
 }
 
 const styles = {

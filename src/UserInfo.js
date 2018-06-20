@@ -19,7 +19,7 @@ function UserInfo(props) {
 		<div className="UserInfo" style={styles.UserInfo}>
 			<Avatar
 				className="Avatar"
-				email={props.user.email}
+				URL={props.user.avatarURL}
 			/>
 			<div className="user" style={styles.user}>{props.user.username}</div>
 			<SignOut logOut={props.logOut}/>

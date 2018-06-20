@@ -7,7 +7,7 @@ function Avatar(props) {
 			width: '40px',
 			fontSize: '1rem',
 			borderRadius: '20px',
-			background: `url(https://api.adorable.io/avatars/32/${props.email})`
+			background: `url(${props.URL})`
 	}
 	return (
 		<div

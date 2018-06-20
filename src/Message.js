@@ -6,7 +6,7 @@ function Message(props) {
 		<div className="Message" style={styles.Message}>
 			<Avatar
 				className="Avatar"
-				email={props.message.user.email}
+				URL={props.message.user.avatarURL}
 			/>
 			<div style={styles.details}>
 				<div className="Metadata" style={styles.Metadata}>

@@ -15,6 +15,7 @@ class App extends Component {
 				email: '',
 				username: '',
 				uid:  null,
+				avatarURL: '',
 			},
 		}
 		this.sub();
@@ -47,6 +48,7 @@ class App extends Component {
 				username: user.displayName ? user.displayName : user.email,
 				email: user.email,
 				uid: user.uid,
+				avatarURL: user.photoURL ? user.photoURL : `https://api.adorable.io/avatars/32/${user.email}`
 			}
 		});
 	};
@@ -64,11 +66,18 @@ class App extends Component {
 									logOut={this.logOut}
 									{...navProps}
 								/>
-								:<Redirect to="/login" />
+							:<Redirect to={`/login/redirect=${navProps.match.params.roomName}`}/>
 						)}/>
-						<Route render={navProps => (
+						<Route path="/login/:redirectString?" render={navProps => (
 							this.isLoggedIn()
-								?<Redirect to="/rooms/general" />
+							?<Redirect 
+								from="/login/:redirectString" 
+								to={
+									(/redirect=.+/).test(navProps.match.params.redirectString)
+										?`/rooms/${navProps.match.params.redirectString.slice(9)}`
+										:'/rooms/general/'
+								}
+							/>
 								:<SignIn 
 									logIn={this.logIn} 
 									unsub={this.unsub}
@@ -77,7 +86,13 @@ class App extends Component {
 								/>
 						)}/>
 						<Route render={navProps => (
-							<Redirect to="/rooms/general" />
+							<Redirect 
+								to={
+									this.isLoggedIn()
+										?'/rooms/general/'
+										:'/login/'
+								}
+							/>
 						)}/>
 					</Switch>
 			</div>
