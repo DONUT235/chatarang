@@ -14,7 +14,7 @@ function RoomList(props) {
 								className={css(styles.liA)} 
 								to={`/rooms/${encodeURIComponent(channel.name)}/`}
 							>
-								{channel.name}
+								{channel.displayName}
 							</Link>
 						</li>
 					);

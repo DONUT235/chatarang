@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Avatar from './Avatar';
 import { StyleSheet, css } from 'aphrodite';
 import 'emoji-mart/css/emoji-mart.css';
-import { Picker } from 'emoji-mart';
+import { Emoji, Picker } from 'emoji-mart';
 
 class Message extends Component {
 	state = {
@@ -32,10 +32,38 @@ class Message extends Component {
 					>
 						<i className="far fa-smile"></i>
 					</button>
+					<div className={css(styles.emojiContainer)}>
+						{
+							this.props.message.reactions
+								?this.props.message.reactions.map(reaction => (
+									<div 
+										onClick={
+											() => this.props.toggleReaction(
+												this.props.index, 
+												this.props.user.uid
+											)(reaction)
+										}
+										key={reaction.id}
+										className={css(styles.emoji)}
+									>
+										<Emoji 
+											emoji={{id: reaction.id}} 
+											size={16}
+										/>
+										{reaction.count}
+									</div>
+								))
+								:null
+						}
+					</div>
 				</div>
 				{
 					this.state.showPicker
-						?<Picker showPreview={false} />
+						?<Picker 
+							showPreview={false} 
+							style={pickerStyle} 
+							onSelect={this.props.toggleReaction(this.props.index, this.props.user.uid)}
+						/>
 						:null
 				}
 			</div>
@@ -55,7 +83,11 @@ const styles = StyleSheet.create({
 		top: '0.5rem',
 		right: '0.5rem',
 		cursor: 'pointer',
+		':hover': {
+			color: '#3366ff',
+		},
 	},
+
 	Message: {
 		display: 'flex',
 		marginTop: '1rem',
@@ -73,6 +105,16 @@ const styles = StyleSheet.create({
 		alignItems: 'baseline',
 	},
 
+	emojiContainer: {
+		display: 'flex',
+	},
+
+	emoji: {
+		borderRadius: '3px',
+		border: '1px solid rgba(0,0,0,0.4)',
+		cursor: 'pointer',
+	},
+
 	user: {
 		fontWeight: 'bold',
 		marginRight: '0.5rem',
@@ -83,5 +125,10 @@ const styles = StyleSheet.create({
 		fontSize: '0.8rem',
 	},
 });
+
+const pickerStyle = {
+	position: 'absolute',
+	right: '2rem',
+}
 
 export default Message;

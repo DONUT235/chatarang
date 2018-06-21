@@ -2,14 +2,14 @@ import React from 'react';
 
 function ChatHeader(props) {
 	const handleClick = ev => {
-		if(window.confirm(`Are you sure you want to delete the #${props.channel.name} channel`)) {
+		if(window.confirm(`Are you sure you want to delete the #${props.channel.displayName} channel`)) {
 			props.removeChannel(props.channel);
 		}
 	}
 	return (
 		<div className="ChatHeader" style={styles.ChatHeader}>
 			<div className="roomInfo">
-				<h2 style={styles.h2}>#{props.channel.name}</h2>
+				<h2 style={styles.h2}>#{props.channel.displayName}</h2>
 				<p style={styles.p}>{props.channel.description}</p>
 			</div>
 			<button style={styles.button} onClick={handleClick}>

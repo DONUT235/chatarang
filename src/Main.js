@@ -50,6 +50,24 @@ class Main extends Component {
 			this.hasAccess(this.state.channels[channel])
 		)).map(channel => this.state.channels[channel]);
 	};
+	channelCategories = () => {
+		const legalChannels = this.legalChannels();
+		const legalDMs = [];
+		const legalNonDMs = [];
+		legalChannels.forEach(channel => {
+			if(channel.dm) {
+				legalDMs.push(channel);
+			} else {
+				legalNonDMs.push(channel);
+			}
+		});
+		return {
+			all: this.state.channels,
+			legal: legalChannels,
+			legalDMs: legalDMs,
+			legalNonDMs: legalNonDMs,
+		};
+	};
 	hasAccess = channel => {
 		return channel && (!channel.isPrivate || channel.users[this.props.user.uid]);
 	};
@@ -73,11 +91,10 @@ class Main extends Component {
 				<Sidebar 
 					user={this.props.user} 
 					logOut={this.props.logOut} 
-					legalChannels={this.legalChannels()} 
 					addChannel={this.addChannel}
 					history={this.props.history}
 					allUsers={this.props.allUsers}
-					allChannels={this.state.channels}
+					channelCategories={this.channelCategories()}
 				/>
 				<Chat 
 					user={this.props.user} 

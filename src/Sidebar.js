@@ -1,7 +1,8 @@
 import React from 'react';
 import UserInfo from './UserInfo';
-import RoomList from './RoomList.js';
+import RoomList from './RoomList';
 import RoomForm from './RoomForm';
+import DMForm from './DMForm';
 import { Route, Switch, Link } from 'react-router-dom';
 import { StyleSheet, css } from 'aphrodite';
 
@@ -15,7 +16,16 @@ function Sidebar(props) {
 							addChannel={props.addChannel}		
 							allUsers={props.allUsers}
 							user={props.user}
-							allChannels={props.allChannels}
+							allChannels={props.channelCategories.all}
+							{...navProps}
+						/>
+					)}/>
+					<Route path="/rooms/:roomName/directMessage/" render={navProps => (
+						<DMForm 
+							addChannel={props.addChannel}		
+							allUsers={props.allUsers}
+							user={props.user}
+							allChannels={props.channelCategories.all}
 							{...navProps}
 						/>
 					)}/>
@@ -33,7 +43,20 @@ function Sidebar(props) {
 								</Link>
 							</div>
 							<RoomList 
-								channels={props.legalChannels} 
+								channels={props.channelCategories.legalNonDMs} 
+								switchChannel={props.switchChannel}
+								addChannel={props.addChannel}
+								history={props.history}
+								user={props.user}
+							/>
+							<div className={css(styles.heading)}>
+								<h2 className={css(styles.h2)}>Direct Messages</h2>
+								<Link className={css(styles.button)} to="directMessage/">
+									<i className="fas fa-plus-circle" title="Add a direct message room"></i>
+								</Link>
+							</div>
+							<RoomList 
+								channels={props.channelCategories.legalDMs} 
 								switchChannel={props.switchChannel}
 								addChannel={props.addChannel}
 								history={props.history}

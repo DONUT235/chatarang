@@ -8,9 +8,6 @@ class RoomForm extends Component {
 		super(props);
 		this.state = {
 			newChannel: {
-				name: '',
-				description: '',
-				isPrivate: false,
 				users: [],
 			},
 			error: '',
@@ -33,24 +30,36 @@ class RoomForm extends Component {
 			users[user.value] = this.props.allUsers[user.value];
 		});
 		users[this.props.user.uid] = this.props.user;
-		if(this.props.allChannels[this.state.newChannel.name]) {
-			this.setState({error: 'That channel already exists.'});
+		
+		const uidArray = Object.keys(users).sort();
+		const name = uidArray.join('+');
+		if(this.props.allChannels[name]) {
+			this.setState({error: 'There is already a DM channel for that set of users'});
 			return;
 		}
-		if((/^[^[\].$#/]+$/).test(this.state.newChannel.name)) {
-			this.props.addChannel(
-				this.state.newChannel.name,
-				this.state.newChannel.description,
-				this.state.newChannel.isPrivate,
-				false,
-				users
-			);
-			this.props.history.goBack();
-		} else if(this.state.newChannel.name.length > 0) {
-			this.setState({error: 'Room names may not contain [].$#/'});
-		} else {
-			this.setState({error: 'Room name must not be empty'});
-		}
+		const description = uidArray.map((uid, index) => {
+			let suffix = '';
+			if(index < uidArray.length-1) {
+				suffix = ' ';
+				if(index === uidArray.length-2) {
+					suffix = ' and' + suffix;
+				}
+				if(uidArray.length > 2) {
+					suffix = ',' + suffix;
+				}
+			} else {
+				suffix = "'s direct messages";
+			}
+			return users[uid].username+suffix;
+		}).join('');
+		this.props.addChannel(
+			name,
+			description,
+			true,
+			true,
+			users
+		);
+		this.props.history.goBack();
 	};
 	userList = () => {
 		return Object.keys(this.props.allUsers).map(uid => ({
@@ -67,44 +76,21 @@ class RoomForm extends Component {
 				<main className={css(styles.main)}>
 					<h2 className={css(styles.title)}>Create a new room</h2>
 					<form className={css(styles.form)} onSubmit={this.handleSubmit}>
-						<p>
-							<label className={css(styles.label)}>
-								<input 
-									type="checkbox" 
-									name="isPrivate" 
-									checked={this.state.newChannel.isPrivate}
-									onChange={this.handleChange}
-								/>
-									Private room
+						<div>
+							<label
+								htmlFor="users"
+								className={css(styles.label)}
+							>
+								Add users
 							</label>
-						</p>
-						{
-							this.state.newChannel.isPrivate
-								?<div>
-									<label
-										htmlFor="users"
-										className={css(styles.label)}
-									>
-										Add users
-									</label>
-									<Select
-										name="users"
-										multi
-										value={this.state.newChannel.users}
-										onChange={this.handleSelectChange}
-										options={this.userList()}
-									/>
-								</div>
-								:null
-						}
-						<p>
-							<label className={css(styles.label)} htmlFor="name">Room name</label>
-							<input type="text" name="name" onChange={this.handleChange}/>
-						</p>
-						<p>
-							<label className={css(styles.label)} htmlFor="description">Description</label>
-							<input type="text" name="description" onChange={this.handleChange}/>
-						</p>
+							<Select
+								name="users"
+								multi
+								value={this.state.newChannel.users}
+								onChange={this.handleSelectChange}
+								options={this.userList()}
+							/>
+						</div>
 						<div className={css(styles.buttonContainer)}>
 							<button type="submit" className={css(styles.button)}>Create Room</button>
 							<button type="button" onClick={this.goBack} className={`${css(styles.button)} ${css(styles.cancel)}`}>Cancel</button>
@@ -194,7 +180,7 @@ const styles = StyleSheet.create({
 		width: '10rem',
 		cursor: 'pointer',
 		outline: 0,
-		border: '1px solid black',
+		border: 0,
 	},
 
 	cancel: {

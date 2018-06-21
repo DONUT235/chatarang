@@ -14,10 +14,24 @@ class MessageList extends Component {
 		return (
 			<div className="MessageList" style={styles.MessageList}>
 				<div style={styles.roomAnnouncement}>
-					<h3 style={styles.h3}>#{this.props.channelName}</h3>
-					<p>This is the very beginning of the #{this.props.channelName} room.</p>
+					{
+						this.props.dm
+						?<h3 style={styles.h3}>{this.props.channelName}</h3>
+						:<div>
+							<h3 style={styles.h3}>#{this.props.channelName}</h3>
+							<p>This is the very beginning of the #{this.props.channelName} room.</p>
+						</div>
+					}
 				</div>
-				{this.props.messages.map(message => <Message key={message.id} message={message}/>)}
+				{this.props.messages.map((message, i) => (
+					<Message 
+						key={message.id} 
+						message={message} 
+						toggleReaction={this.props.toggleReaction}
+						index={i}
+						user={this.props.user}
+					/>))
+				}
 				<div id="messageBottom" ref={el=>this.messagesEnd = el}></div>
 			</div>
 		);
